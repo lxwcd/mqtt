@@ -7,7 +7,8 @@ MQTT 学习笔记
 > [MQTT Version 3.1.1](http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/os/mqtt-v3.1.1-os.html)   
 > [MQTT Version 5.0](https://docs.oasis-open.org/mqtt/mqtt/v5.0/os/mqtt-v5.0-os.html)   
 > [MQTT Guide 2024: Beginner to Advanced](https://www.emqx.com/en/mqtt-guide)   
-> [rfc5246](https://www.rfc-editor.org/rfc/inline-errata/rfc5246.html)   
+> [TLS1.2 rfc5246](https://www.rfc-editor.org/rfc/inline-errata/rfc5246.html)   
+> [RFC 8446: The Transport Layer Security (TLS) Protocol Version 1.3](https://www.rfc-editor.org/rfc/rfc8446.html)   
   
 MQTT（Message Queuing Telemetry Transport，消息队列遥测传输）是一种轻量级的消息传输协议，专为简单、高效的信息传输设计。  
   
@@ -1727,12 +1728,12 @@ Extension: server_name (len=20)
     - 客户端根 CA 颁发的证书  
     - 客户端中间 CA 颁发的证书  
   
-|               认证方式               | emqx  | mosquitto | hivemq | event grid |  
-| :----------------------------------: | :---: | :-------: | :----: | :--------: |  
-|       用户名密码认证 (无 tls)        |   √   |     √     |   ×    |     ×      |  
-|     单向 tls（服务端自签名证书）     |   √   |           |        |            |  
-|  单向 tls（服务端根 CA 颁发的证书）  |       |           |        |            |  
-| 单向 tls（服务端中间 CA 颁发的证书） |       |           |        |            |  
-|     双向 tls（客户端自签名证书）     |       |           |        |            |  
-|  双向 tls（客户端根 CA 颁发的证书）  |       |           |        |            |  
-| 双向 tls（客户端中间 CA 颁发的证书） |       |           |        |            |  
+|               认证方式               | emqx  | mosquitto | hivemq | event grid |
+| :----------------------------------: | :---: | :-------: | :----: | :--------: |
+|       用户名密码认证 (无 tls)        |   √   |     √     |   ×    |     ×      |
+|     单向 tls（服务端自签名证书）     |   √   |           |        |            |
+|  单向 tls（服务端根 CA 颁发的证书）  |       |           |        |            |
+| 单向 tls（服务端中间 CA 颁发的证书） |       |           |        |            |
+|     双向 tls（客户端自签名证书）     |       |           |        |            |
+|  双向 tls（客户端根 CA 颁发的证书）  |       |           |        |            |
+| 双向 tls（客户端中间 CA 颁发的证书） |       |           |        |            |
