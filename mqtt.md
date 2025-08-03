@@ -343,6 +343,14 @@ Client ID 可以为空，且同时 Clean Session 可以设置为 false，此时�
 > [Beginners Guide To The MQTT Protocol](http://www.steves-internet-guide.com/mqtt/)  
 > [MQTT Protocol Explained: Ultimate Guide for IoT Beginners](https://www.emqx.com/en/blog/the-easiest-guide-to-getting-started-with-mqtt)  
     
+MQTT 是一个面向物联网的轻量级发布/订阅消息协议，专为低带宽、高延迟、不稳定的网络环境设计，核心目标是实现设备间高效、可靠、安全的双向通信。
+
+MQTT is used for messaging and data exchange between IoT and industrial IoT (IIoT) devices, such as embedded devices, sensors, industrial PLCs, etc. 
+The protocol is event driven and connects devices using the publish / subscribe (Pub/Sub) pattern. 
+The sender (Publisher) and the receiver (Subscriber) communicate via Topics and are decoupled from each other. 
+The connection between them is handled by the MQTT broker. 
+The MQTT broker filters all incoming messages and distributes them correctly to the Subscribers.
+
 ## 适用场景  
 - 物联网（IoT）的 messaging protocal  
 - 轻量的 publish/subscribe messaging transport  
@@ -369,7 +377,7 @@ MQTT 消息结构 包含固定的头部、可选的变量头部和可选的消�
     
 8. **跨平台**：MQTT 客户端可以在多种操作系统和硬件平台上运行，包括智能手机、平板电脑、个人电脑和各种嵌入式设备。  
     
-# Reliable Message Delivery  
+## Reliable Message Delivery  
 通过定义 QoS（Quality of Service）来实现消息的可靠交付  
     
 # MQTT Version  
@@ -574,7 +582,6 @@ If the Server rejects the ClientID it MAY respond to the CONNECT packet with a C
 2. **PUBACK回应**：Broker接收到QoS 1的消息后，会发送一个PUBACK包给发布者，表明它已经成功接收到了消息。  
 3. **超时和重发**：如果发布者在一个设定的超时时间内没有收到PUBACK包，它会再次发送消息。这是为了确保消息至少被传递一次，即使可能会出现网络问题。为了防止无限重传，通常会设置一个重传次数的限制。  
 如果发布者（Publisher）在发送消息后没有在预定的超时时间内收到PUBACK数据包，那么它可能会再次尝试发送消息。这个过程可以重复多次，直到接收到PUBACK确认为止。  
-在QoS 1的使用场景下，如果发布者（Publisher）在发送消息后没有在预定的超时时间内收到PUBACK数据包，那么它会再次尝试发送消息。这个过程可以重复多次，直到接收到PUBACK确认为止，但具体的重试次数和策略取决于实现MQTT客户端的具体逻辑。  
     
 QoS 1级别的服务质量确保消息至少被成功地传递一次，但也可能会有重复。为了达成这一目标，MQTT协议允许发布者在没有接收到确认的情况下重新发送消息。以下是一般的重发策略：  
 - **首次尝试发送**: 发布者首次发送消息，并启动一个计时器等待PUBACK响应。  
@@ -645,11 +652,11 @@ MQTT QoS 2 是最高级别的服务质量，确保消息只被传递一次，不
   
 3. 状态机视角（简化）  
   
-| 状态         | Sender 事件             | Receiver 事件   |  
-| ------------ | ----------------------- | --------------- |  
-| NEW          | 缓存 PUBLISH            | —               |  
-| PUBREC 收到  | 删 PUBLISH，缓存 PUBREL | 已收到消息      |  
-| PUBCOMP 收到 | 删 PUBREL，ID 回收      | 删缓存，ID 回收 |  
+| 状态         | Sender 事件             | Receiver 事件   |
+| ------------ | ----------------------- | --------------- |
+| NEW          | 缓存 PUBLISH            | —               |
+| PUBREC 收到  | 删 PUBLISH，缓存 PUBREL | 已收到消息      |
+| PUBCOMP 收到 | 删 PUBREL，ID 回收      | 删缓存，ID 回收 |
   
 任何一步的网络丢包都只触发 **本阶段的重传**，不会越级重传，从而保证“恰好一次”。  
   
@@ -809,7 +816,7 @@ MQTT 3.1.1 如果设置 Clean Session 为 False，即保存会话，此时 broke
 如 emqx 可以在配置文件或者 web 管理界面的 **管理->MQTT配置->会话->会话过期间隔** 设置，这个设置仅针对非 MQTT5.0 的版本，默认 2 小时，即端口连接后 broker 会保存会话 2 小时。  
     
 # retain message 保留消息  
-如果 client1 发送一个消息时，为保留消息，client2 订阅了该主题，但设置了 clean session，在 client2 离线期间 client1 发送的消息将不会被 client2 接收到。即使 client2 重连后，client2 也不会收到 client1 发送的消息。  
+如果 client1 发送一个消息时，为保留消息，client2 订阅了该主题，但设置了 clean session，client2 重连后，client2 也会收到 client1 发送的保留消息。  
 如果 client3 订阅了该主题，client1 已经发送该消息后，client3 才订阅该消息，也能收到之前 client1 发送的消息。  
 如果 client1 之前发送过多条保留消息，client4 在发布后订阅该主题，也只会收到最后一条消息。  
     
